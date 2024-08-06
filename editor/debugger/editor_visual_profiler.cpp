@@ -103,7 +103,7 @@ void EditorVisualProfiler::clear() {
 	variables->clear();
 	//activate->set_pressed(false);
 
-	graph_limit = 1000.0f / CLAMP(int(EDITOR_GET("debugger/profiler_target_fps")), 30, 540);
+	graph_limit = 1000.0f / CLAMP(int(EDITOR_GET("debugger/profiler_target_fps")), 1, 1000);
 
 	updating_frame = true;
 	cursor_metric_edit->set_min(0);
