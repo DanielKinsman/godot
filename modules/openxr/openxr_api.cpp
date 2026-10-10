@@ -2772,6 +2772,18 @@ bool OpenXRAPI::process() {
 		wrapper->on_process();
 	}
 
+	// let's start our frame..
+	XrFrameBeginInfo frame_begin_info = {
+		XR_TYPE_FRAME_BEGIN_INFO, // type
+		nullptr // next
+	};
+
+	result = xrBeginFrame(session, &frame_begin_info);
+	if (XR_FAILED(result)) {
+		print_line("OpenXR: failed to begin frame [", get_error_string(result), "]");
+		return false;
+	}
+
 	return true;
 }
 
@@ -2798,17 +2810,6 @@ void OpenXRAPI::pre_render() {
 
 	// We should get our frame no from the rendering server, but this will do.
 	begin_debug_label_region(String("Session Frame ") + String::num_uint64(++render_state.frame));
-
-	// let's start our frame..
-	XrFrameBeginInfo frame_begin_info = {
-		XR_TYPE_FRAME_BEGIN_INFO, // type
-		nullptr // next
-	};
-	XrResult result = xrBeginFrame(session, &frame_begin_info);
-	if (XR_FAILED(result)) {
-		print_line("OpenXR: failed to begin frame [", get_error_string(result), "]");
-		return;
-	}
 
 	// Reset this, we haven't found a viewport for output yet
 	render_state.has_xr_viewport = false;
